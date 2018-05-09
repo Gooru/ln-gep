@@ -29,11 +29,8 @@
 	"app.configuration": {
 		"default.offset": 0,
 		"default.limit": 20,
-		"default.max.limit": 30,
-		"event.http.poolSize": 5,
-		"event.http.timeout": 30000,
-		"event.publish.uri": "http://nile-dev.gooru.org/api/nucleus-insights/v2/event"
-	},
+		"default.max.limit": 30
+   },
 	"systemProperties": {
 		"logback.configurationFile": "src/main/resources/logback-global-event-processor.xml"
 	}

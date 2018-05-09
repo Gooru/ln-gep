@@ -25,6 +25,8 @@ public class KafkaMessageProcessorBuilder {
         switch (eventName) {
         case Constants.Event.RESOURCE_PERFORMANCE:
         	return new ResourceEventProcessor(message);
+        case Constants.Event.COLLECTION_START:  
+        	return new CollectionEventProcessor(message);
         case Constants.Event.COLLECTION_PERFORMANCE:  
         	return new CollectionEventProcessor(message);         
         default:

@@ -39,6 +39,9 @@ public class CollectionEventProcessor implements MessageProcessor {
     		}
 
     		try {
+    			result = CollectionStartEventHandler.collectionStartEventCreate
+    					(CollectionEventCreatorBuilder.buildCollectionStartEventCreator(collEvent));            	
+    			LOGGER.info("Collection Start Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());    			
     			result = CollectionTimespentEventHandler.collectionTSEventCreate
     					(CollectionEventCreatorBuilder.buildCollectionTimespentEventCreator(collEvent));            	
     			LOGGER.info("Collection Score Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());    			

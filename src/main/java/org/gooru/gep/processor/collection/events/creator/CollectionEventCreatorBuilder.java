@@ -13,6 +13,10 @@ public class CollectionEventCreatorBuilder {
         throw new AssertionError();
     }
 
+    public static CollectionEventCreator buildCollectionStartEventCreator(CollectionEventObject collEvent) {
+        return new CollectionStartEventCreator(collEvent);
+    }
+    
     public static CollectionEventCreator buildCollectionScoreEventCreator(CollectionEventObject collEvent) {
         return new CollectionScoreEventCreator(collEvent);
     }

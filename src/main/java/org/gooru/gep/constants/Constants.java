@@ -63,6 +63,7 @@ public final class Constants {
     	
   	  public static final String RESOURCE_PERFORMANCE = "resource.performance";
 	  public static final String COLLECTION_PERFORMANCE = "collection.performance";
+	  public static final String COLLECTION_START = "collection.start";
 
         private Event() {
             throw new AssertionError();
