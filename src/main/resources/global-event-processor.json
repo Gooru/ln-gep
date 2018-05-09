@@ -1,0 +1,40 @@
+{
+	"comment": "This is bundled JSON file. Idea is that we should externalize this also as part of build. Currently this is going to hold the dev env information",
+	"datasources": {
+		"defaultDataSource": {
+			"ds.type": "hikari",
+			"username": "nucleus",
+			"password": "nucleus",
+			"autoCommit": true,
+			"jdbcUrl": "jdbc:postgresql://localhost:5432/nucleus",
+			"maximumPoolSize": 5
+		}
+	},
+	"kafka.consumer.config": {
+		"bootstrap.servers": "127.0.0.1:9092",
+		"topics": "org.gooru.da.sink.logW.usage.events",
+		"group.id": "logW",
+		"session.timeout.ms": "6000",
+		"message.bus.send.timeout.seconds": 10
+	},
+	"kafka.producer.config": {
+		"bootstrap.servers": "127.0.0.1:9092",
+		"key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+		"value.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+		"batch.size": 1,
+		"retries": 5,
+		"linger.ms": 1,
+		"buffer.memory": 33554432
+	},
+	"app.configuration": {
+		"default.offset": 0,
+		"default.limit": 20,
+		"default.max.limit": 30,
+		"event.http.poolSize": 5,
+		"event.http.timeout": 30000,
+		"event.publish.uri": "http://nile-dev.gooru.org/api/nucleus-insights/v2/event"
+	},
+	"systemProperties": {
+		"logback.configurationFile": "src/main/resources/logback-global-event-processor.xml"
+	}
+}

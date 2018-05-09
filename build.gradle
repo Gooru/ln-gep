@@ -1,0 +1,111 @@
+
+
+buildscript {
+    repositories { 
+    mavenCentral()
+    maven { url 'http://repo.javalite.io' }    
+    jcenter() 
+        }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.2"
+    }
+}
+
+plugins {
+    id 'java' // or 'groovy' Must be explicitly applied
+    id "com.github.johnrengelman.shadow" version "2.0.2"
+}
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+    mavenCentral()
+    maven {
+        url = 'http://oss.sonatype.org/content/repositories/snapshots/'
+        url = 'http://repo.javalite.io'
+    }
+}
+
+defaultTasks 'shadowJar'
+
+if (!JavaVersion.current().java8Compatible) {
+    throw new IllegalStateException('''This needs Java 8. You are using something else, try again.'''.stripMargin())
+}
+
+
+ext {
+    //vertxVersion = '3.5.0'
+    slf4jVersion = '1.7.12'
+    junitVersion = '4.12'
+    logbackVersion = '1.0.13'
+    hikariVersion = '2.7.6'
+    postgresVersion = '9.4-1206-jdbc42'
+}
+
+dependencies {
+    // Vertx specific dependencies
+    //compile "io.vertx:vertx-core:${vertxVersion}"
+    //compile "io.vertx:vertx-hazelcast:${vertxVersion}"
+    //compile "io.vertx:vertx-web:${vertxVersion}"
+    //compile "io.vertx:vertx-dropwizard-metrics:${vertxVersion}"
+
+    // Other dependencies
+    compile "ch.qos.logback:logback-classic:${logbackVersion}"
+    compile "com.zaxxer:HikariCP:${hikariVersion}"
+    compile "org.postgresql:postgresql:${postgresVersion}"
+    //compile "io.vertx:vertx-redis-client:${vertxVersion}"
+
+    //compile "org.jdbi:jdbi:${jdbiVersion}"
+    // Test dependencies
+    testCompile "junit:junit:${junitVersion}"
+    // active jdbc
+    
+    //Kafka
+	compile group: 'org.apache.kafka', name: 'kafka-clients', version: '0.10.1.1'
+		
+	//org.json
+	compile 'org.json:json:20171018'
+	
+	//apache http-client
+	compile 'org.apache.httpcomponents:httpclient:4.5.5'
+	
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+	
+	
+    // https://mvnrepository.com/artifact/net.time4j/time4j-core
+    compile group: 'net.time4j', name: 'time4j-core', version: '4.36'
+
+}
+
+version = "0.1-snapshot"
+
+tasks.withType(JavaCompile) {
+    //enable compilation in a separate daemon process
+    options.fork = true
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    //enable incremental compilation
+    options.incremental = true
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+
+}
+
+shadowJar {
+    classifier = 'fat'
+    manifest {
+        attributes 'Main-Class': 'org.gooru.gep.bootstrap.AppRunner'
+        attributes 'Created-By': 'Gooru.org'
+    }
+}
+
+defaultTasks 'shadowJar'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+}
+
+
