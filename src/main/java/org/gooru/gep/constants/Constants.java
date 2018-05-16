@@ -60,10 +60,12 @@ public final class Constants {
     }
      
     public static final class Event {
-    	
-  	  public static final String RESOURCE_PERFORMANCE = "resource.performance";
-	  public static final String COLLECTION_PERFORMANCE = "collection.performance";
-	  public static final String COLLECTION_START = "collection.start";
+
+    	public static final String RESOURCE_PERFORMANCE = "resource.performance";
+    	public static final String COLLECTION_PERFORMANCE = "collection.performance";
+    	public static final String COLLECTION_START = "collection.start";
+    	public static final String COLL_SCORE_UPDATE_EVENT = "collection.score.update";
+    	public static final String RES_SCORE_UPDATE_EVENT = "resource.score.update";
 
         private Event() {
             throw new AssertionError();

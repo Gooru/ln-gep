@@ -43,11 +43,14 @@ public class ResourceEventProcessor implements MessageProcessor {
         					(ResourceEventCreatorBuilder.buildResourceTimespentEventCreator(resEvent));            	
         			LOGGER.info("Resource Timespent Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString(1));
     			} else {
-        			result = QuestionTimespentEventHandler.questionTSEventCreate
-        					(ResourceEventCreatorBuilder.buildQuestionTimespentEventCreator(resEvent));
-        			//TODO: OPEN Ended Question: What happens when the score for the question is NULL
+    				if (!resEvent.getEventName().equalsIgnoreCase(ResourceEventConstants.EventAttributes.RES_SCORE_UPDATE_EVENT)){
+            			result = QuestionTimespentEventHandler.questionTSEventCreate
+            					(ResourceEventCreatorBuilder.buildQuestionTimespentEventCreator(resEvent));
+            			LOGGER.info("Question Timespent Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString(1));    					
+    				}
         			result = QuestionScoreEventHandler.queScoreEventCreate
-        					(ResourceEventCreatorBuilder.buildQuestionScoreEventCreator(resEvent));
+        					(ResourceEventCreatorBuilder.buildQuestionScoreEventCreator(resEvent));    				
+        			LOGGER.info("Question Score Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString(1));
     			}
 
     			    			

@@ -28,7 +28,7 @@ public class CollectionEventProcessor implements MessageProcessor {
 	public MessageResponse process() {
     	
     	CollectionEventObject collEvent = new CollectionEventObject();
-    	MessageResponse result;
+    	MessageResponse result = null;
 
     	try {            
     		try {
@@ -39,20 +39,31 @@ public class CollectionEventProcessor implements MessageProcessor {
     		}
 
     		try {
-    			result = CollectionStartEventHandler.collectionStartEventCreate
-    					(CollectionEventCreatorBuilder.buildCollectionStartEventCreator(collEvent));            	
-    			LOGGER.info("Collection Start Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());    			
-    			result = CollectionTimespentEventHandler.collectionTSEventCreate
-    					(CollectionEventCreatorBuilder.buildCollectionTimespentEventCreator(collEvent));            	
-    			LOGGER.info("Collection Score Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());    			
-    			if (collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.COLLECTION) ||
-    					collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.EXT_COLLECTION)) {
+    			if (collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_START_EVENT)) {
+        			result = CollectionStartEventHandler.collectionStartEventCreate
+        					(CollectionEventCreatorBuilder.buildCollectionStartEventCreator(collEvent));
+        			LOGGER.info("Collection Start Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());
+    			}
+
+    			if (collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_PERF_EVENT)) {
+        			result = CollectionTimespentEventHandler.collectionTSEventCreate
+        					(CollectionEventCreatorBuilder.buildCollectionTimespentEventCreator(collEvent));            	
+        			LOGGER.info("Collection Timespent Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());     				
+    			}
+    			
+    			if ((collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.COLLECTION) ||
+    					collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.EXT_COLLECTION)) &&
+    					(collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_PERF_EVENT) || 
+    							collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLL_SCORE_UPDATE_EVENT))) {
         			result = CollectionScoreEventHandler.collectionScoreEventCreate
         					(CollectionEventCreatorBuilder.buildCollectionScoreEventCreator(collEvent));            	
         			LOGGER.info("Collection Score Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());    				
-    			} else if (collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.ASSESSMENT) ||
-    					collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.EXT_ASSESSMENT)) {
-        			//TODO: OPEN Ended Question: What happens when the score for the Assessment is NULL (when All questions are OE questions and are not yet graded)
+    			} 
+    			
+    			if ((collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.ASSESSMENT) ||
+    					collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.EXT_ASSESSMENT)) &&
+    					(collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_PERF_EVENT) || 
+    							collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLL_SCORE_UPDATE_EVENT))) {
         			result = AssessmentScoreEventHandler.assessmentScoreEventCreate
         					(CollectionEventCreatorBuilder.buildAssessmentScoreEventCreator(collEvent));            	
         			LOGGER.info("Assessment Score Event Successfully Dispatched" + result.reply().getJSONObject("http.body").toString());    				

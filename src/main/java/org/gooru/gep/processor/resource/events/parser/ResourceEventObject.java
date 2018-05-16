@@ -217,13 +217,19 @@ public class ResourceEventObject {
         
         event.result = requestBody.getJSONObject(ResourceEventConstants.EventAttributes.RESULT);
         if (event.result != null) {
-        	if (!event.result.isNull(ResourceEventConstants.EventAttributes.SCORE)) {
+        	if (event.result.has(ResourceEventConstants.EventAttributes.SCORE) && 
+        			!event.result.isNull(ResourceEventConstants.EventAttributes.SCORE)) {
             	event.score = event.result.getDouble(ResourceEventConstants.EventAttributes.SCORE);        		
         	}
-        	if (!event.result.isNull(ResourceEventConstants.EventAttributes.MAX_SCORE)) {
+        	if (event.result.has(ResourceEventConstants.EventAttributes.MAX_SCORE) && 
+        			!event.result.isNull(ResourceEventConstants.EventAttributes.MAX_SCORE)) {
             	event.max_score = event.result.getDouble(ResourceEventConstants.EventAttributes.MAX_SCORE);        		
         	}
-        	event.timeSpent = event.result.getLong(ResourceEventConstants.EventAttributes.TIMESPENT);
+        	if (event.result.has(ResourceEventConstants.EventAttributes.TIMESPENT) && 
+        			!event.result.isNull(ResourceEventConstants.EventAttributes.TIMESPENT)) {
+        		event.timeSpent = event.result.getLong(ResourceEventConstants.EventAttributes.TIMESPENT);        		
+        	}
+        	
         }
         event.context = requestBody.getJSONObject(ResourceEventConstants.EventAttributes.CONTEXT);
         
@@ -243,10 +249,12 @@ public class ResourceEventObject {
             event.sessionId = event.context.getString(ResourceEventConstants.EventAttributes.SESSION_ID);
             event.collectionId = event.context.getString(ResourceEventConstants.EventAttributes.COLLECTION_ID);
             event.collectionType = event.context.getString(ResourceEventConstants.EventAttributes.COLLECTION_TYPE);
-            if (!event.context.isNull(ResourceEventConstants.EventAttributes.PARTNER_ID)) {
+            if (event.context.has(ResourceEventConstants.EventAttributes.PARTNER_ID) && 
+            		!event.context.isNull(ResourceEventConstants.EventAttributes.PARTNER_ID)) {
             	event.partnerId = event.context.getString(ResourceEventConstants.EventAttributes.PARTNER_ID);            	
             }            
-            if (!event.context.isNull(ResourceEventConstants.EventAttributes.TENANT_ID)) {
+            if (event.context.has(ResourceEventConstants.EventAttributes.TENANT_ID) && 
+            		!event.context.isNull(ResourceEventConstants.EventAttributes.TENANT_ID)) {
             	event.tenantId = event.context.getString(ResourceEventConstants.EventAttributes.TENANT_ID);            	
             }
             
@@ -262,6 +270,36 @@ public class ResourceEventObject {
             LOGGER.info("User not provided");
             throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
                 "User not provided for request");
+        }        
+        
+        if (resourceId == null) {
+            LOGGER.info("Resource Id not provided");
+            throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
+                "Resource Id not provided in the request");
+        }        
+        
+        if (resourceType == null) {
+            LOGGER.info("Resource Id not provided");
+            throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
+                "Resource Type not provided in the request");
+        }
+        
+        if (collectionId == null) {
+            LOGGER.info("Collection Id not provided");
+            throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
+                "Collection Id not provided in the request");
+        }        
+
+        if (collectionType == null) {
+            LOGGER.info("Collection Type not provided");
+            throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
+                "Collection Type not provided in the request");
+        }        
+        
+        if (sessionId == null) {
+            LOGGER.info("Collection Type not provided");
+            throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
+                "Session Id not provided in the request");
         }        
 
     }

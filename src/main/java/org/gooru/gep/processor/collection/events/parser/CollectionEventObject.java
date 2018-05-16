@@ -217,13 +217,19 @@ public class CollectionEventObject {
 
         event.result = requestBody.getJSONObject(CollectionEventConstants.EventAttributes.RESULT);
         if (event.result != null) {
-        	if (!event.result.isNull(CollectionEventConstants.EventAttributes.SCORE)) {
+        	if (event.result.has(CollectionEventConstants.EventAttributes.SCORE) && 
+        			!event.result.isNull(CollectionEventConstants.EventAttributes.SCORE)) {
             	event.score = event.result.getDouble(CollectionEventConstants.EventAttributes.SCORE);        		
         	}
-        	if (!event.result.isNull(CollectionEventConstants.EventAttributes.MAX_SCORE)) {
+        	if (event.result.has(CollectionEventConstants.EventAttributes.MAX_SCORE) && 
+        			!event.result.isNull(CollectionEventConstants.EventAttributes.MAX_SCORE)) {
             	event.max_score = event.result.getDouble(CollectionEventConstants.EventAttributes.MAX_SCORE);        		
         	}
-        	event.timeSpent = event.result.getLong(CollectionEventConstants.EventAttributes.TIMESPENT);
+        	if (event.result.has(CollectionEventConstants.EventAttributes.TIMESPENT) && 
+        			!event.result.isNull(CollectionEventConstants.EventAttributes.TIMESPENT)) {
+        		event.timeSpent = event.result.getLong(CollectionEventConstants.EventAttributes.TIMESPENT);        		
+        	}
+        	        	
         }
         event.context = requestBody.getJSONObject(CollectionEventConstants.EventAttributes.CONTEXT);
         if (event.context != null) {
@@ -238,14 +244,25 @@ public class CollectionEventObject {
         	}
         	if (!event.context.isNull(CollectionEventConstants.EventAttributes.LESSON_ID)) {
         		event.lessonId = event.context.getString(CollectionEventConstants.EventAttributes.LESSON_ID);        		
-        	}        	
-        	event.pathId = event.context.getInt(CollectionEventConstants.EventAttributes.PATH_ID);
+        	}        	        	
+        	if (event.context.has(CollectionEventConstants.EventAttributes.PATH_ID) && 
+        			!event.context.isNull(CollectionEventConstants.EventAttributes.PATH_ID)) {
+        		event.pathId = event.context.getInt(CollectionEventConstants.EventAttributes.PATH_ID);                    		
+        	} else {
+        		//Default value of pathId is 0
+        		event.pathId = 0;
+        	}
+        	if (event.context.has(CollectionEventConstants.EventAttributes.QUESTION_COUNT) && 
+        			!event.context.isNull(CollectionEventConstants.EventAttributes.QUESTION_COUNT)) {
+        		event.questionCount = event.context.getInt(CollectionEventConstants.EventAttributes.QUESTION_COUNT);        		
+        	}
             event.sessionId = event.context.getString(CollectionEventConstants.EventAttributes.SESSION_ID);
-            event.questionCount = event.context.getInt(CollectionEventConstants.EventAttributes.QUESTION_COUNT);
-            if (!event.context.isNull(CollectionEventConstants.EventAttributes.PARTNER_ID)) {
+            if (event.context.has(CollectionEventConstants.EventAttributes.PARTNER_ID) && 
+            		!event.context.isNull(CollectionEventConstants.EventAttributes.PARTNER_ID)) {
             	event.partnerId = event.context.getString(CollectionEventConstants.EventAttributes.PARTNER_ID);            	
             }            
-            if (!event.context.isNull(CollectionEventConstants.EventAttributes.TENANT_ID)) {
+            if (event.context.has(CollectionEventConstants.EventAttributes.TENANT_ID) && 
+            		!event.context.isNull(CollectionEventConstants.EventAttributes.TENANT_ID)) {
             	event.tenantId = event.context.getString(CollectionEventConstants.EventAttributes.TENANT_ID);            	
             }            
         }
@@ -260,6 +277,24 @@ public class CollectionEventObject {
             LOGGER.info("User not provided");
             throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
                 "User not provided for request");
+        }
+        
+        if (collectionId == null) {
+            LOGGER.info("Collection Id not provided");
+            throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
+                "Collection Id not provided in the request");
+        }        
+
+        if (collectionType == null) {
+            LOGGER.info("Collection Type not provided");
+            throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
+                "Collection Type not provided in the request");
+        }        
+        
+        if (sessionId == null) {
+            LOGGER.info("Collection Type not provided");
+            throw new HttpResponseWrapperException(HttpConstants.HttpStatus.BAD_REQUEST,
+                "Session Id not provided in the request");
         }        
 
     }

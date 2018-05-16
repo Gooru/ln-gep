@@ -37,6 +37,12 @@ public class CollectionEventConstants {
 		public static final String EXT_COLLECTION = "collection-external";
 		public static final String ASSESSMENT = "assessment";
 		public static final String EXT_ASSESSMENT = "assessment-external";
+		
+		public static final String COLLECTION_PERF_EVENT = "collection.performance";
+		public static final String COLLECTION_START_EVENT = "collection.start";
+		public static final String RESOURCE_PERF_EVENT = "resource.performance";
+		public static final String COLL_SCORE_UPDATE_EVENT = "collection.score.update";
+
 
 		private EventAttributes() {
 			throw new AssertionError();

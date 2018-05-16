@@ -33,6 +33,9 @@ public class ResourceEventConstants {
 		
 		public static final String RESOURCE = "resource";
 		public static final String QUESTION = "question";
+		
+		public static final String RESOURCE_PERF_EVENT = "resource.performance";
+		public static final String RES_SCORE_UPDATE_EVENT = "resource.score.update";
 
 		private EventAttributes() {
 			throw new AssertionError();

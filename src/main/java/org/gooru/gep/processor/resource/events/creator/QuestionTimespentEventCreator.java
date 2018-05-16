@@ -1,6 +1,5 @@
 package org.gooru.gep.processor.resource.events.creator;
 
-import org.gooru.gep.processor.collection.events.parser.CollectionEventConstants;
 import org.gooru.gep.processor.kafka.producer.KafkaMessagePublisher;
 import org.gooru.gep.processor.resource.events.parser.ResourceEventConstants;
 import org.gooru.gep.processor.resource.events.parser.ResourceEventObject;
@@ -44,15 +43,15 @@ public class QuestionTimespentEventCreator implements ResourceEventCreator {
         dEvent.put(ResourceEventConstants.EventAttributes.EVENT_NAME, QUESTION_TIMESPENT);
         dEvent.put(ResourceEventConstants.EventAttributes.EVENT_ID, queEvent.getEventId());
         
-        context.put(CollectionEventConstants.EventAttributes.CLASS_ID, (queEvent.getClassId() != null) ? queEvent.getClassId() : null);
-        context.put(CollectionEventConstants.EventAttributes.COURSE_ID, (queEvent.getCourseId() != null) ? queEvent.getCourseId() : null);
-        context.put(CollectionEventConstants.EventAttributes.UNIT_ID, (queEvent.getUnitId() != null) ? queEvent.getUnitId() : null);
-        context.put(CollectionEventConstants.EventAttributes.LESSON_ID, (queEvent.getLessonId() != null) ? queEvent.getLessonId() : null);
-        context.put(CollectionEventConstants.EventAttributes.SESSION_ID, queEvent.getSessionId());
-        context.put(CollectionEventConstants.EventAttributes.COLLECTION_ID, queEvent.getCollectionId());
-        context.put(CollectionEventConstants.EventAttributes.COLLECTION_TYPE, queEvent.getCollectionType());
-        context.put(CollectionEventConstants.EventAttributes.PARTNER_ID, (queEvent.getPartnerId() != null) ? queEvent.getPartnerId() : null);
-        context.put(CollectionEventConstants.EventAttributes.TENANT_ID, (queEvent.getTenantId() != null) ? queEvent.getTenantId() : null);
+        context.put(ResourceEventConstants.EventAttributes.CLASS_ID, (queEvent.getClassId() != null) ? queEvent.getClassId() : null);
+        context.put(ResourceEventConstants.EventAttributes.COURSE_ID, (queEvent.getCourseId() != null) ? queEvent.getCourseId() : null);
+        context.put(ResourceEventConstants.EventAttributes.UNIT_ID, (queEvent.getUnitId() != null) ? queEvent.getUnitId() : null);
+        context.put(ResourceEventConstants.EventAttributes.LESSON_ID, (queEvent.getLessonId() != null) ? queEvent.getLessonId() : null);
+        context.put(ResourceEventConstants.EventAttributes.SESSION_ID, queEvent.getSessionId());
+        context.put(ResourceEventConstants.EventAttributes.COLLECTION_ID, queEvent.getCollectionId());
+        context.put(ResourceEventConstants.EventAttributes.COLLECTION_TYPE, queEvent.getCollectionType());
+        context.put(ResourceEventConstants.EventAttributes.PARTNER_ID, (queEvent.getPartnerId() != null) ? queEvent.getPartnerId() : null);
+        context.put(ResourceEventConstants.EventAttributes.TENANT_ID, (queEvent.getTenantId() != null) ? queEvent.getTenantId() : null);
         
         result.put(ResourceEventConstants.EventAttributes.TIMESPENT, queEvent.getTimeSpent());      
 

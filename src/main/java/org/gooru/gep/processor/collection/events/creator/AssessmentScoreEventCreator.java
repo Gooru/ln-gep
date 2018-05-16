@@ -19,14 +19,14 @@ import org.slf4j.LoggerFactory;
 public class AssessmentScoreEventCreator implements CollectionEventCreator {
 	
 	private static final String TOPIC_ASSESSMENT_SCORE = "org.gooru.da.sink.gep.assessment.score";
-    private static final String COLLECTION_SCORE = "usage.assessment.score";
+    private static final String ASSESSMENT_SCORE = "usage.assessment.score";
     CollectionEventObject collEvent = new CollectionEventObject();
 
     public AssessmentScoreEventCreator(CollectionEventObject collEvent) {
         this.collEvent = collEvent;
     }
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(CollectionScoreEventCreator.class);  
+    private static final Logger LOGGER = LoggerFactory.getLogger(AssessmentScoreEventCreator.class);  
     
     @SuppressWarnings("rawtypes")
     public ExecutionResult<MessageResponse> createDiscreteEvent() {
@@ -36,7 +36,7 @@ public class AssessmentScoreEventCreator implements CollectionEventCreator {
         JSONObject result = new JSONObject();
         
         dEvent.put(CollectionEventConstants.EventAttributes.USER_ID, collEvent.getUser());
-        dEvent.put(CollectionEventConstants.EventAttributes.EVENT_NAME, COLLECTION_SCORE);
+        dEvent.put(CollectionEventConstants.EventAttributes.EVENT_NAME, ASSESSMENT_SCORE);
         dEvent.put(CollectionEventConstants.EventAttributes.EVENT_ID, collEvent.getEventId());
         dEvent.put(CollectionEventConstants.EventAttributes.ACTIVITY_TIME, collEvent.getActivityTime());
         dEvent.put(CollectionEventConstants.EventAttributes.COLLECTION_TYPE, collEvent.getCollectionType());
@@ -73,9 +73,9 @@ public class AssessmentScoreEventCreator implements CollectionEventCreator {
     	JSONObject dEvent = discreteEvent;
         try {
           KafkaMessagePublisher.getInstance().sendMessage2Kafka(TOPIC_ASSESSMENT_SCORE, dEvent);
-          LOGGER.info("Successfully dispatched Collection Score event..");
+          LOGGER.info("Successfully dispatched Assessment Score event..");
         } catch (Exception e) {
-          LOGGER.error("Error while dispatching Collection Score event.. ", e);
+          LOGGER.error("Error while dispatching Assessment Score event.. ", e);
         }
       }
 

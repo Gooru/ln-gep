@@ -12,13 +12,9 @@ public final class MessageProcessorBuilder {
         throw new AssertionError();
     }
 
+    //STUB
     public static MessageProcessor buildProcessor(JSONObject message, String op) {
-    	switch (op) {
-    	case Constants.Message.MSG_OP_XFORM_XAPI_EVENT:
-    		return null; 
-    	default:
-    		return null;
-    	}
+    	return null;   	
 
     }
 

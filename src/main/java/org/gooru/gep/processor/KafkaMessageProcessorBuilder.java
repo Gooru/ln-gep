@@ -28,7 +28,11 @@ public class KafkaMessageProcessorBuilder {
         case Constants.Event.COLLECTION_START:  
         	return new CollectionEventProcessor(message);
         case Constants.Event.COLLECTION_PERFORMANCE:  
-        	return new CollectionEventProcessor(message);         
+        	return new CollectionEventProcessor(message);
+        case Constants.Event.COLL_SCORE_UPDATE_EVENT:  
+        	return new CollectionEventProcessor(message);
+        case Constants.Event.RES_SCORE_UPDATE_EVENT:  
+        	return new ResourceEventProcessor(message);
         default:
           LOGGER.error("Invalid operation type passed in, not able to handle");          
          return null;
