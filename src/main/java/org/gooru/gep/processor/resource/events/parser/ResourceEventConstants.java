@@ -22,6 +22,11 @@ public class ResourceEventConstants {
 		public static final String SESSION_ID = "sessionId";
 		public static final String PARTNER_ID = "partnerId";
 		public static final String TENANT_ID = "tenantId";
+
+		public static final String CONTEXT_COLLECTION_ID = "contextCollectionId";
+		public static final String CONTEXT_COLLECTION_TYPE = "contextCollectionType";
+		public static final String PATH_ID = "pathId";
+		public static final String PATH_TYPE = "pathType";
 		
 		public static final String ACTIVITY_TIME = "activityTime";
 		public static final String SCORE = "score";

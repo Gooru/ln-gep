@@ -37,6 +37,12 @@ public class ResourceEventObject {
 	private String eventId;
 	private String tenantId;
 	private String partnerId;
+
+	private String contextCollectionId;
+	private String contextCollectionType;
+	private int pathId;
+	private String pathType;
+
 	
 	public String getUser() {
 		return user;
@@ -198,7 +204,40 @@ public class ResourceEventObject {
 	public void setPartnerId(String partnerId) {
 		this.partnerId = partnerId;
 	}
+
+	public String getContextCollectionId() {
+		return contextCollectionId;
+	}
+
+	public void setContextCollectionId(String contextCollectionId) {
+		this.contextCollectionId = contextCollectionId;
+	}
+
+	public String getContextCollectionType() {
+		return contextCollectionType;
+	}
+
+	public void setContextCollectionType(String contextCollectionType) {
+		this.contextCollectionType = contextCollectionType;
+	}
+
+	public String getPathType() {
+		return pathType;
+	}
+
+	public void setPathType(String pathType) {
+		this.pathType = pathType;
+	}
 	
+	public int getPathId() {
+		return pathId;
+	}
+
+	public void setPathId(int pathId) {
+		this.pathId = pathId;
+	}
+
+
     static ResourceEventObject builder(JSONObject requestBody) {
     	LOGGER.info(requestBody.toString(1));
     	ResourceEventObject result = ResourceEventObject.buildFromJSONObject(requestBody);
@@ -257,6 +296,24 @@ public class ResourceEventObject {
             		!event.context.isNull(ResourceEventConstants.EventAttributes.TENANT_ID)) {
             	event.tenantId = event.context.getString(ResourceEventConstants.EventAttributes.TENANT_ID);            	
             }
+            
+        	if (!event.context.isNull(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_ID)) {
+                event.contextCollectionId = event.context.getString(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_ID);        		
+        	}
+        	if (!event.context.isNull(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE)) {
+        		event.contextCollectionType = event.context.getString(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE);        		
+        	}
+        	if (event.context.has(ResourceEventConstants.EventAttributes.PATH_ID) && 
+        			!event.context.isNull(ResourceEventConstants.EventAttributes.PATH_ID)) {
+        		event.pathId = event.context.getInt(ResourceEventConstants.EventAttributes.PATH_ID);                    		
+        	} else {
+        		//Default value of pathId is 0
+        		event.pathId = 0;
+        	}
+        	if (!event.context.isNull(ResourceEventConstants.EventAttributes.PATH_TYPE)) {
+        		event.pathType = event.context.getString(ResourceEventConstants.EventAttributes.PATH_TYPE);        		
+        	}            
+
             
         }
         

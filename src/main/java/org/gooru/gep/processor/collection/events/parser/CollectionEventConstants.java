@@ -25,6 +25,10 @@ public class CollectionEventConstants {
 		public static final String PARTNER_ID = "partnerId";
 		public static final String TENANT_ID = "tenantId";
 		
+		public static final String CONTEXT_COLLECTION_ID = "contextCollectionId";
+		public static final String CONTEXT_COLLECTION_TYPE = "contextCollectionType";
+		public static final String PATH_TYPE = "pathType";
+		
 		public static final String ACTIVITY_TIME = "activityTime";
 		public static final String SCORE = "score";
 		public static final String MAX_SCORE = "maxScore";
