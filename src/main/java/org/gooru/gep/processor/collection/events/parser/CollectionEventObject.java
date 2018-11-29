@@ -36,7 +36,11 @@ public class CollectionEventObject {
 	private int questionCount;
 	private String partnerId;
 	private String tenantId;
-	
+
+	private String contextCollectionId;
+	private String contextCollectionType;
+	private String pathType;
+
 	
     public String getUser() {
 		return user;
@@ -198,6 +202,31 @@ public class CollectionEventObject {
 		this.tenantId = tenantId;
 	}
 
+	public String getContextCollectionId() {
+		return contextCollectionId;
+	}
+
+	public void setContextCollectionId(String contextCollectionId) {
+		this.contextCollectionId = contextCollectionId;
+	}
+
+	public String getContextCollectionType() {
+		return contextCollectionType;
+	}
+
+	public void setContextCollectionType(String contextCollectionType) {
+		this.contextCollectionType = contextCollectionType;
+	}
+
+	public String getPathType() {
+		return pathType;
+	}
+
+	public void setPathType(String pathType) {
+		this.pathType = pathType;
+	}
+
+
 	static CollectionEventObject builder(JSONObject requestBody) {
     	LOGGER.info(requestBody.toString(1));
     	CollectionEventObject event = CollectionEventObject.buildFromJSONObject(requestBody);
@@ -264,7 +293,17 @@ public class CollectionEventObject {
             if (event.context.has(CollectionEventConstants.EventAttributes.TENANT_ID) && 
             		!event.context.isNull(CollectionEventConstants.EventAttributes.TENANT_ID)) {
             	event.tenantId = event.context.getString(CollectionEventConstants.EventAttributes.TENANT_ID);            	
-            }            
+            }      
+            
+        	if (!event.context.isNull(CollectionEventConstants.EventAttributes.CONTEXT_COLLECTION_ID)) {
+                event.contextCollectionId = event.context.getString(CollectionEventConstants.EventAttributes.CONTEXT_COLLECTION_ID);        		
+        	}
+        	if (!event.context.isNull(CollectionEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE)) {
+        		event.contextCollectionType = event.context.getString(CollectionEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE);        		
+        	}
+        	if (!event.context.isNull(CollectionEventConstants.EventAttributes.PATH_TYPE)) {
+        		event.pathType = event.context.getString(CollectionEventConstants.EventAttributes.PATH_TYPE);        		
+        	}
         }
         
         return event;

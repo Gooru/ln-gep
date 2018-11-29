@@ -42,16 +42,22 @@ public class ResourceTimespentEventCreator implements ResourceEventCreator {
         dEvent.put(ResourceEventConstants.EventAttributes.EVENT_NAME, RESOURCE_TIMESPENT);
         dEvent.put(ResourceEventConstants.EventAttributes.EVENT_ID, resEvent.getEventId());
         
-        context.put(ResourceEventConstants.EventAttributes.CLASS_ID, (resEvent.getClassId() != null) ? resEvent.getClassId() : null);
-        context.put(ResourceEventConstants.EventAttributes.COURSE_ID, (resEvent.getCourseId() != null) ? resEvent.getCourseId() : null);
-        context.put(ResourceEventConstants.EventAttributes.UNIT_ID, (resEvent.getUnitId() != null) ? resEvent.getUnitId() : null);
-        context.put(ResourceEventConstants.EventAttributes.LESSON_ID, (resEvent.getLessonId() != null) ? resEvent.getLessonId() : null);
+        //Retain Null Attributes so that we don't end up with Serialization issues at DAP
+        context.put(ResourceEventConstants.EventAttributes.CLASS_ID, (resEvent.getClassId() != null) ? resEvent.getClassId() : JSONObject.NULL);
+        context.put(ResourceEventConstants.EventAttributes.COURSE_ID, (resEvent.getCourseId() != null) ? resEvent.getCourseId() : JSONObject.NULL);
+        context.put(ResourceEventConstants.EventAttributes.UNIT_ID, (resEvent.getUnitId() != null) ? resEvent.getUnitId() : JSONObject.NULL);
+        context.put(ResourceEventConstants.EventAttributes.LESSON_ID, (resEvent.getLessonId() != null) ? resEvent.getLessonId() : JSONObject.NULL);
         context.put(ResourceEventConstants.EventAttributes.SESSION_ID, resEvent.getSessionId());
+        context.put(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_ID, (resEvent.getContextCollectionId() != null) ? resEvent.getContextCollectionId() : JSONObject.NULL);
+        context.put(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE, (resEvent.getContextCollectionType() != null) ? resEvent.getContextCollectionType() : JSONObject.NULL);
         context.put(ResourceEventConstants.EventAttributes.COLLECTION_ID, resEvent.getCollectionId());
         context.put(ResourceEventConstants.EventAttributes.COLLECTION_TYPE, resEvent.getCollectionType());
-        context.put(ResourceEventConstants.EventAttributes.PARTNER_ID, (resEvent.getPartnerId() != null) ? resEvent.getPartnerId() : null);
-        context.put(ResourceEventConstants.EventAttributes.TENANT_ID, (resEvent.getTenantId() != null) ? resEvent.getTenantId() : null);
+        context.put(ResourceEventConstants.EventAttributes.PARTNER_ID, (resEvent.getPartnerId() != null) ? resEvent.getPartnerId() : JSONObject.NULL);
+        context.put(ResourceEventConstants.EventAttributes.TENANT_ID, (resEvent.getTenantId() != null) ? resEvent.getTenantId() : JSONObject.NULL);
         
+        context.put(ResourceEventConstants.EventAttributes.PATH_ID, resEvent.getPathId());
+        context.put(ResourceEventConstants.EventAttributes.PATH_TYPE, (resEvent.getPathType() != null) ? resEvent.getPathType() : JSONObject.NULL);
+
         result.put(ResourceEventConstants.EventAttributes.TIMESPENT, resEvent.getTimeSpent());      
 
         dEvent.put("context", context);
