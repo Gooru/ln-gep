@@ -51,6 +51,7 @@ public class QuestionTimespentEventCreator implements ResourceEventCreator {
         context.put(ResourceEventConstants.EventAttributes.SESSION_ID, queEvent.getSessionId());
         context.put(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_ID, (queEvent.getContextCollectionId() != null) ? queEvent.getContextCollectionId() : JSONObject.NULL);
         context.put(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE, (queEvent.getContextCollectionType() != null) ? queEvent.getContextCollectionType() : JSONObject.NULL);
+        context.put(ResourceEventConstants.EventAttributes.CONTENT_SOURCE, (queEvent.getContentSource() != null) ? queEvent.getContentSource() : JSONObject.NULL);
         context.put(ResourceEventConstants.EventAttributes.COLLECTION_ID, queEvent.getCollectionId());
         context.put(ResourceEventConstants.EventAttributes.COLLECTION_TYPE, queEvent.getCollectionType());
         context.put(ResourceEventConstants.EventAttributes.PARTNER_ID, (queEvent.getPartnerId() != null) ? queEvent.getPartnerId() : JSONObject.NULL);
