@@ -50,6 +50,7 @@ public class ResourceTimespentEventCreator implements ResourceEventCreator {
         context.put(ResourceEventConstants.EventAttributes.SESSION_ID, resEvent.getSessionId());
         context.put(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_ID, (resEvent.getContextCollectionId() != null) ? resEvent.getContextCollectionId() : JSONObject.NULL);
         context.put(ResourceEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE, (resEvent.getContextCollectionType() != null) ? resEvent.getContextCollectionType() : JSONObject.NULL);
+        context.put(ResourceEventConstants.EventAttributes.CONTENT_SOURCE, (resEvent.getContentSource() != null) ? resEvent.getContentSource() : JSONObject.NULL);
         context.put(ResourceEventConstants.EventAttributes.COLLECTION_ID, resEvent.getCollectionId());
         context.put(ResourceEventConstants.EventAttributes.COLLECTION_TYPE, resEvent.getCollectionType());
         context.put(ResourceEventConstants.EventAttributes.PARTNER_ID, (resEvent.getPartnerId() != null) ? resEvent.getPartnerId() : JSONObject.NULL);
