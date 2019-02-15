@@ -40,9 +40,9 @@ public class CollectionEventObject {
 	private String contextCollectionId;
 	private String contextCollectionType;
 	private String pathType;
+	private String contentSource;
 
-	
-    public String getUser() {
+	public String getUser() {
 		return user;
 	}
 
@@ -226,6 +226,13 @@ public class CollectionEventObject {
 		this.pathType = pathType;
 	}
 
+    public String getContentSource() {
+		return contentSource;
+	}
+
+	public void setContentSource(String contentSource) {
+		this.contentSource = contentSource;
+	}
 
 	static CollectionEventObject builder(JSONObject requestBody) {
     	LOGGER.info(requestBody.toString(1));
@@ -300,6 +307,9 @@ public class CollectionEventObject {
         	}
         	if (!event.context.isNull(CollectionEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE)) {
         		event.contextCollectionType = event.context.getString(CollectionEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE);        		
+        	}
+        	if (!event.context.isNull(CollectionEventConstants.EventAttributes.CONTENT_SOURCE)) {
+        		event.contentSource = event.context.getString(CollectionEventConstants.EventAttributes.CONTENT_SOURCE);        		
         	}
         	if (!event.context.isNull(CollectionEventConstants.EventAttributes.PATH_TYPE)) {
         		event.pathType = event.context.getString(CollectionEventConstants.EventAttributes.PATH_TYPE);        		

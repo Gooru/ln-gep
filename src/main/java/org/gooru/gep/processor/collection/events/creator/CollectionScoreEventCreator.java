@@ -48,6 +48,7 @@ public class CollectionScoreEventCreator implements CollectionEventCreator {
         context.put(CollectionEventConstants.EventAttributes.LESSON_ID, (collEvent.getLessonId() != null) ? collEvent.getLessonId() : null);
         context.put(CollectionEventConstants.EventAttributes.CONTEXT_COLLECTION_ID, (collEvent.getContextCollectionId() != null) ? collEvent.getContextCollectionId() : JSONObject.NULL);
         context.put(CollectionEventConstants.EventAttributes.CONTEXT_COLLECTION_TYPE, (collEvent.getContextCollectionType() != null) ? collEvent.getContextCollectionType() : JSONObject.NULL);
+        context.put(CollectionEventConstants.EventAttributes.CONTENT_SOURCE, (collEvent.getContentSource() != null) ? collEvent.getContentSource() : JSONObject.NULL);
         context.put(CollectionEventConstants.EventAttributes.SESSION_ID, collEvent.getSessionId());
         context.put(CollectionEventConstants.EventAttributes.PARTNER_ID, (collEvent.getPartnerId() != null) ? collEvent.getPartnerId() : null);
         context.put(CollectionEventConstants.EventAttributes.TENANT_ID, (collEvent.getTenantId() != null) ? collEvent.getTenantId() : null);

@@ -27,6 +27,7 @@ public class ResourceEventConstants {
 		public static final String CONTEXT_COLLECTION_TYPE = "contextCollectionType";
 		public static final String PATH_ID = "pathId";
 		public static final String PATH_TYPE = "pathType";
+		public static final String CONTENT_SOURCE = "contentSource";
 		
 		public static final String ACTIVITY_TIME = "activityTime";
 		public static final String SCORE = "score";
