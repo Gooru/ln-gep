@@ -26,7 +26,7 @@ public class QuestionTimespentEventCreator implements ResourceEventCreator {
         this.queEvent = queEvent;
     }
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceTimespentEventCreator.class);  
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuestionTimespentEventCreator.class);
 
     
     @SuppressWarnings("rawtypes")
