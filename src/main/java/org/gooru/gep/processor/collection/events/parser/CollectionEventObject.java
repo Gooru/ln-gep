@@ -41,8 +41,9 @@ public class CollectionEventObject {
 	private String contextCollectionType;
 	private String pathType;
 	private String contentSource;
+	private String additionalContext;
 
-	public String getUser() {
+  public String getUser() {
 		return user;
 	}
 
@@ -233,6 +234,14 @@ public class CollectionEventObject {
 	public void setContentSource(String contentSource) {
 		this.contentSource = contentSource;
 	}
+	
+	public String getAdditionalContext() {
+	  return additionalContext;
+	}
+
+	public void setAdditionalContext(String additionalContext) {
+	  this.additionalContext = additionalContext;
+	}
 
 	static CollectionEventObject builder(JSONObject requestBody) {
     	LOGGER.info(requestBody.toString(1));
@@ -314,6 +323,9 @@ public class CollectionEventObject {
         	if (!event.context.isNull(CollectionEventConstants.EventAttributes.PATH_TYPE)) {
         		event.pathType = event.context.getString(CollectionEventConstants.EventAttributes.PATH_TYPE);        		
         	}
+            if (!event.context.isNull(CollectionEventConstants.EventAttributes.ADDITIONAL_CONTEXT)) {
+              event.additionalContext = event.context.getString(CollectionEventConstants.EventAttributes.ADDITIONAL_CONTEXT);             
+          }
         }
         
         return event;
