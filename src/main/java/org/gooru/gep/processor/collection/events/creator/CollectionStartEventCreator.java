@@ -49,6 +49,7 @@ public class CollectionStartEventCreator implements CollectionEventCreator {
         context.put(CollectionEventConstants.EventAttributes.TENANT_ID, (collEvent.getTenantId() != null) ? collEvent.getTenantId() : JSONObject.NULL);
         context.put(CollectionEventConstants.EventAttributes.PATH_ID, collEvent.getPathId());
         context.put(CollectionEventConstants.EventAttributes.PATH_TYPE, (collEvent.getPathType() != null) ? collEvent.getPathType() : JSONObject.NULL);
+        context.put(CollectionEventConstants.EventAttributes.ADDITIONAL_CONTEXT, (collEvent.getAdditionalContext() != null) ? collEvent.getAdditionalContext() : JSONObject.NULL);
         
         dEvent.put("context", context);        
         
