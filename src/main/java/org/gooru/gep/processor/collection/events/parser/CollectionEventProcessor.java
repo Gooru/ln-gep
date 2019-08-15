@@ -61,7 +61,8 @@ public class CollectionEventProcessor implements MessageProcessor {
     			} 
     			
     			if ((collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.ASSESSMENT) ||
-    					collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.EXT_ASSESSMENT)) &&
+    					collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.EXT_ASSESSMENT) ||
+                        collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.OFFLINE_ACTIVITY)) &&
     					(collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_PERF_EVENT) || 
     							collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLL_SCORE_UPDATE_EVENT))) {
         			result = AssessmentScoreEventHandler.assessmentScoreEventCreate
