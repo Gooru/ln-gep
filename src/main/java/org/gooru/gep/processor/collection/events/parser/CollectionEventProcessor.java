@@ -3,6 +3,7 @@ package org.gooru.gep.processor.collection.events.parser;
 import org.gooru.gep.processor.MessageProcessor;
 import org.gooru.gep.processor.collection.events.creator.CollectionEventCreatorBuilder;
 import org.gooru.gep.processor.collection.events.parser.CollectionEventConstants.EventAttributes;
+import org.gooru.gep.processor.kafka.producer.KafkaMessagePublisher;
 import org.gooru.gep.responses.MessageResponse;
 import org.gooru.gep.responses.MessageResponseFactory;
 import org.json.JSONObject;
@@ -17,7 +18,8 @@ import org.slf4j.LoggerFactory;
 public class CollectionEventProcessor implements MessageProcessor {
 	
     private final JSONObject message;
-    private static final Logger LOGGER = LoggerFactory.getLogger(CollectionEventProcessor.class);    
+    private static final Logger LOGGER = LoggerFactory.getLogger(CollectionEventProcessor.class);  
+    private static final String TOPIC_XAPI_XFORM = "org.gooru.source.gep.sink.xapi.xform.collection.perf";
 
     public CollectionEventProcessor(JSONObject message) {
         this.message = message;
@@ -42,13 +44,15 @@ public class CollectionEventProcessor implements MessageProcessor {
     			if (collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_START_EVENT)) {
         			result = CollectionStartEventHandler.collectionStartEventCreate
         					(CollectionEventCreatorBuilder.buildCollectionStartEventCreator(collEvent));
-        			LOGGER.info("Collection Start Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());
+        			LOGGER.info("Collection Start Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());        		       
+        	        sendEventtoKafka(message);
     			}
 
     			if (collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_PERF_EVENT)) {
         			result = CollectionTimespentEventHandler.collectionTSEventCreate
         					(CollectionEventCreatorBuilder.buildCollectionTimespentEventCreator(collEvent));            	
-        			LOGGER.info("Collection Timespent Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());     				
+        			LOGGER.info("Collection Timespent Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());
+        			sendEventtoKafka(message);
     			}
     			
     			if ((collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.COLLECTION) ||
@@ -80,6 +84,15 @@ public class CollectionEventProcessor implements MessageProcessor {
     	}
 
     	return result;
+    }
+
+    private void sendEventtoKafka(JSONObject msg) {
+      try {
+        KafkaMessagePublisher.getInstance().sendMessage2Kafka(TOPIC_XAPI_XFORM, msg);
+        LOGGER.info("Successfully forked Collection Event for XAPI transformation..");
+      } catch (Exception e) {
+        LOGGER.error("Unable to fork Collection Event for XAPI transformation..", e);
+      }
     }
 
 
