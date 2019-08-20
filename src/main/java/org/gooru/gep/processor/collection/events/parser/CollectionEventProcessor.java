@@ -45,7 +45,7 @@ public class CollectionEventProcessor implements MessageProcessor {
         			result = CollectionStartEventHandler.collectionStartEventCreate
         					(CollectionEventCreatorBuilder.buildCollectionStartEventCreator(collEvent));
         			LOGGER.info("Collection Start Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());        		       
-        	        sendEventtoKafka(message);
+        	        //sendEventtoKafka(message);
     			}
 
     			if (collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_PERF_EVENT)) {
