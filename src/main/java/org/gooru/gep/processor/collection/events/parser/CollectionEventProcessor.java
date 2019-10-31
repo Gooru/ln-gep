@@ -45,14 +45,13 @@ public class CollectionEventProcessor implements MessageProcessor {
         			result = CollectionStartEventHandler.collectionStartEventCreate
         					(CollectionEventCreatorBuilder.buildCollectionStartEventCreator(collEvent));
         			LOGGER.info("Collection Start Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());        		       
-        	        //sendEventtoKafka(message);
+        	        sendEventtoKafka(message);
     			}
 
     			if (collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLLECTION_PERF_EVENT)) {
         			result = CollectionTimespentEventHandler.collectionTSEventCreate
         					(CollectionEventCreatorBuilder.buildCollectionTimespentEventCreator(collEvent));            	
         			LOGGER.info("Collection Timespent Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());
-        			sendEventtoKafka(message);
     			}
     			
     			if ((collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.COLLECTION) ||
@@ -61,7 +60,8 @@ public class CollectionEventProcessor implements MessageProcessor {
     							collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLL_SCORE_UPDATE_EVENT))) {
         			result = CollectionScoreEventHandler.collectionScoreEventCreate
         					(CollectionEventCreatorBuilder.buildCollectionScoreEventCreator(collEvent));            	
-        			LOGGER.info("Collection Score Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());    				
+        			LOGGER.info("Collection Score Event Successfully Dispatched" +  result.reply().getJSONObject("http.body").toString());
+        			sendEventtoKafka(message);
     			} 
     			
     			if ((collEvent.getCollectionType().equals(CollectionEventConstants.EventAttributes.ASSESSMENT) ||
@@ -71,7 +71,8 @@ public class CollectionEventProcessor implements MessageProcessor {
     							collEvent.getEventName().equalsIgnoreCase(CollectionEventConstants.EventAttributes.COLL_SCORE_UPDATE_EVENT))) {
         			result = AssessmentScoreEventHandler.assessmentScoreEventCreate
         					(CollectionEventCreatorBuilder.buildAssessmentScoreEventCreator(collEvent));            	
-        			LOGGER.info("Assessment Score Event Successfully Dispatched" + result.reply().getJSONObject("http.body").toString());    				
+        			LOGGER.info("Assessment Score Event Successfully Dispatched" + result.reply().getJSONObject("http.body").toString());
+        			sendEventtoKafka(message);
     			}
     			
     		} catch (Exception e) {
