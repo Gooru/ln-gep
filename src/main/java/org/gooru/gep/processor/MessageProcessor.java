@@ -8,6 +8,6 @@ import org.gooru.gep.responses.MessageResponse;
  */
 public interface MessageProcessor {
 
-	MessageResponse process();
 
+  MessageResponse process();
 }
