@@ -17,15 +17,15 @@ public class LearnersCompetencyStatusEventModel {
   private final String eventId;
   private final String eventName;
   private final Context context;
-  private final User user;
+  private final String userId;
   private final Result result;
 
   public LearnersCompetencyStatusEventModel(String eventId, String eventName, Context context,
-      User user, Result result) {
+      String userId, Result result) {
     this.eventId = eventId;
     this.eventName = eventName;
     this.context = context;
-    this.user = user;
+    this.userId = userId;
     this.result = result;
   }
 
@@ -41,12 +41,8 @@ public class LearnersCompetencyStatusEventModel {
     return context;
   }
 
-  public User getUser() {
-    return user;
-  }
-
   public String getUserId() {
-    return user.getId();
+    return userId;
   }
 
   public String getGutCode() {
@@ -60,6 +56,8 @@ public class LearnersCompetencyStatusEventModel {
 
   private static class Context {
     private final String gutCode;
+    private final String tenantId;
+    private final String contentSource;
 
     Context(JSONObject requestBody) {
       JSONObject context = requestBody.getJSONObject(EventAttributes.CONTEXT);
@@ -73,43 +71,28 @@ public class LearnersCompetencyStatusEventModel {
         throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
             "Event -> Context -> compGutCode is NULL OR EMPTY");
       }
+      this.tenantId = context.getString(EventAttributes.TENANT_ID);
+      if (this.tenantId == null || this.tenantId.isEmpty()) {
+        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
+            "Event -> Context -> tenantId is NULL OR EMPTY");
+      }
+      this.contentSource = context.getString(EventAttributes.CONTENT_SOURCE);
+      if (this.contentSource == null || this.contentSource.isEmpty()) {
+        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
+            "Event -> Context -> tenantId is NULL OR EMPTY");
+      }
     }
 
     public String getGutCode() {
       return this.gutCode;
     }
 
-  }
-
-  private static class User {
-    private String id;
-    private final String tenantId;
-
-    User(JSONObject requestBody) {
-      JSONObject user = requestBody.getJSONObject(EventAttributes.USER);
-      if (user == null) {
-        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
-            "Event -> User is NULL OR EMPTY");
-      }
-      this.id = user.getString(EventAttributes.ID);
-      if (id == null || id.isEmpty()) {
-        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
-            "Event -> User -> id is NULL OR EMPTY");
-      }
-      this.tenantId = user.getString(EventAttributes.TENANT_ID);
-      if (this.tenantId == null || this.tenantId.isEmpty()) {
-        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
-            "Event -> User -> tenantId is NULL OR EMPTY");
-      }
-    }
-
-    public String getId() {
-      return id;
-    }
-
     public String getTenantId() {
       return this.tenantId;
     }
+
+
+
   }
 
   private static class Result {
@@ -157,22 +140,20 @@ public class LearnersCompetencyStatusEventModel {
   private static LearnersCompetencyStatusEventModel buildFromJSONObject(JSONObject requestBody) {
     String eventId = requestBody.getString(EventAttributes.EVENT_ID);
     String eventName = requestBody.getString(EventAttributes.EVENT_NAME);
+    String userId = requestBody.getString(EventAttributes.USER_ID);
     Context context = new Context(requestBody);
-    User user = new User(requestBody);
     Result result = new Result(requestBody);
     LearnersCompetencyStatusEventModel eventModel =
-        new LearnersCompetencyStatusEventModel(eventId, eventName, context, user, result);
+        new LearnersCompetencyStatusEventModel(eventId, eventName, context, userId, result);
     return eventModel;
   }
 
   private static JSONObject asJSONObject(LearnersCompetencyStatusEventModel eventModel) {
     JSONObject event = new JSONObject();
-    JSONObject user = new JSONObject();
     JSONObject context = new JSONObject();
     JSONObject result = new JSONObject();
 
-    user.put(EventAttributes.ID, eventModel.getUser().getId());
-    user.put(EventAttributes.TENANT_ID, eventModel.getUser().getTenantId());
+    context.put(EventAttributes.TENANT_ID, eventModel.getContext().getTenantId());
 
     context.put(EventAttributes.GUT_CODE, eventModel.getContext().getGutCode());
 
@@ -180,8 +161,8 @@ public class LearnersCompetencyStatusEventModel {
 
     event.put(EventAttributes.EVENT_ID, eventModel.getEventId());
     event.put(EventAttributes.EVENT_NAME, eventModel.getEventName());
+    event.put(EventAttributes.USER_ID, eventModel.getEventId());
     event.put(EventAttributes.CONTEXT, context);
-    event.put(EventAttributes.USER, user);
     event.put(EventAttributes.RESULT, result);
     return event;
   }
@@ -193,11 +174,11 @@ public class LearnersCompetencyStatusEventModel {
     private static final String EVENT_NAME = "eventName";
     private static final String GUT_CODE = "gutCode";
     private static final String CONTEXT = "context";
-    private static final String USER = "user";
+    private static final String USER_ID = "userId";
     private static final String RESULT = "result";
-    private static final String ID = "id";
     private static final String STATUS = "status";
     private static final String TENANT_ID = "tenantId";
+    private static final String CONTENT_SOURCE = "contentSource";
 
     private EventAttributes() {
       throw new AssertionError();

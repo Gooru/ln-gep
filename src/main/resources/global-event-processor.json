@@ -12,8 +12,15 @@
 	},
 	"kafka.consumer.config": {
 		"bootstrap.servers": "127.0.0.1:9092",
-		"topics": "org.gooru.da.sink.logW.usage.events,org.gooru.da.sink.asdp.usage.events",
+		"topics": "org.gooru.da.sink.logW.usage.events",
 		"group.id": "logW",
+		"session.timeout.ms": "6000",
+		"message.bus.send.timeout.seconds": 10
+	},
+    "kafka.asdp.consumer.config": {
+		"bootstrap.servers": "127.0.0.1:9092",
+		"topics": "org.gooru.da.sink.asdp.usage.events",
+		"group.id": "group-asdp",
 		"session.timeout.ms": "6000",
 		"message.bus.send.timeout.seconds": 10
 	},

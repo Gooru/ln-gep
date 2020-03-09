@@ -39,7 +39,7 @@ public class KafkaMessageConsumer implements Runnable {
 					LOGGER.info("Test Kafka Consumer : {}", record.value());
 					break;
 				default:          
-					LOGGER.warn("Message being read from the topic: {}");
+					LOGGER.warn("Message being read from the topic: {}", record.topic());
 					sendMessage(record.value());
 				}
 			}
