@@ -34,17 +34,8 @@ public enum AsdpEventProcessorBuilder {
 
     @Override
     public AsdpEventHandler build(JSONObject message) {
-      return AsdpEventHandlerBuilder.buildLearnersAssessmentExternalScoreEventHandler(message);
+      return AsdpEventHandlerBuilder.buildLearnersAssessmentScoreEventHandler(message);
     }
-  },
-  ACTIVITY_LEARNERS_QUESTION_SCORE(Constants.Event.ACTIVITY_LEARNERS_QUESTION_SCORE) {
-
-    @Override
-    public AsdpEventHandler build(JSONObject message) {
-      return AsdpEventHandlerBuilder
-          .buildLearnersAssessmentExternalQuestionScoreEventHandler(message);
-    }
-
   };
 
   private String name;

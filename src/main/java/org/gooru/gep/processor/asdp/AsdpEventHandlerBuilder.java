@@ -1,8 +1,7 @@
 package org.gooru.gep.processor.asdp;
 
+import org.gooru.gep.processor.asdp.learners.assessmentscore.LearnersAssessmentScoreEventHandler;
 import org.gooru.gep.processor.asdp.learners.compstatus.LearnersCompetencyStatusEventHandler;
-import org.gooru.gep.processor.asdp.learners.extassessmentquestionscore.LearnersAssessmentExternalQuestionScoreEventHandler;
-import org.gooru.gep.processor.asdp.learners.extassessmentscore.LearnersAssessmentExternalScoreEventHandler;
 import org.json.JSONObject;
 
 public final class AsdpEventHandlerBuilder {
@@ -15,13 +14,9 @@ public final class AsdpEventHandlerBuilder {
     return new LearnersCompetencyStatusEventHandler(message);
   }
 
-  public static AsdpEventHandler buildLearnersAssessmentExternalScoreEventHandler(
-      JSONObject message) {
-    return new LearnersAssessmentExternalScoreEventHandler(message);
-  }
 
-  public static AsdpEventHandler buildLearnersAssessmentExternalQuestionScoreEventHandler(
+  public static AsdpEventHandler buildLearnersAssessmentScoreEventHandler(
       JSONObject message) {
-    return new LearnersAssessmentExternalQuestionScoreEventHandler(message);
+    return new LearnersAssessmentScoreEventHandler(message);
   }
 }

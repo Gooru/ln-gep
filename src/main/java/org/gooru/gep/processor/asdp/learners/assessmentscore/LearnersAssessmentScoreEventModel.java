@@ -1,4 +1,4 @@
-package org.gooru.gep.processor.asdp.learners.extassessmentquestionscore;
+package org.gooru.gep.processor.asdp.learners.assessmentscore;
 
 import org.gooru.gep.constants.HttpConstants;
 import org.gooru.gep.constants.HttpConstants.HttpStatus;
@@ -7,23 +7,25 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LearnersAssessmentExternalQuestionScoreEventModel {
+public class LearnersAssessmentScoreEventModel {
 
   private static final Logger LOGGER =
-      LoggerFactory.getLogger(LearnersAssessmentExternalQuestionScoreEventModel.class);
+      LoggerFactory.getLogger(LearnersAssessmentScoreEventModel.class);
 
   private final String eventId;
   private final String eventName;
+  private String collectionId;
+  private String collectionType;
   private final Context context;
-  private final User user;
+  private final String userId;
   private final Result result;
 
-  public LearnersAssessmentExternalQuestionScoreEventModel(String eventId, String eventName,
-      Context context, User user, Result result) {
+  public LearnersAssessmentScoreEventModel(String eventId, String eventName, Context context,
+      String userId, Result result) {
     this.eventId = eventId;
     this.eventName = eventName;
     this.context = context;
-    this.user = user;
+    this.userId = userId;
     this.result = result;
   }
 
@@ -40,27 +42,35 @@ public class LearnersAssessmentExternalQuestionScoreEventModel {
     return context;
   }
 
-  public User getUser() {
-    return user;
+  public String getUserId() {
+    return userId;
   }
 
   public Result getResult() {
     return result;
   }
 
-
-  public String getUserId() {
-    return user.getId();
+  public String getCollectionId() {
+    return collectionId;
   }
 
-  public String getGutCode() {
-    return context.getGutCode();
+  public void setCollectionId(String collectionId) {
+    this.collectionId = collectionId;
   }
+
+  public String getCollectionType() {
+    return collectionType;
+  }
+
+  public void setCollectionType(String collectionType) {
+    this.collectionType = collectionType;
+  }
+
 
 
   private static class Context {
-    private final String gutCode;
-    private final String questionId;
+    private final String contentSource;
+    private final String tenantId;
 
     Context(JSONObject requestBody) {
       JSONObject context = requestBody.getJSONObject(EventAttributes.CONTEXT);
@@ -68,60 +78,29 @@ public class LearnersAssessmentExternalQuestionScoreEventModel {
         throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
             "Event -> Context is NULL OR EMPTY");
       }
-      this.gutCode = context.getString(EventAttributes.GUT_CODE);
+      this.tenantId = context.getString(EventAttributes.TENANT_ID);
 
-      if (gutCode == null || gutCode.isEmpty()) {
-        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
-            "Event -> Context -> compGutCode is NULL OR EMPTY");
-      }
-
-      this.questionId = context.getString(EventAttributes.QUESTION_ID);
-
-      if (questionId == null || questionId.isEmpty()) {
-        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
-            "Event -> Context -> questionId is NULL OR EMPTY");
-      }
-    }
-
-    public String getQuestionId() {
-      return questionId;
-    }
-
-    public String getGutCode() {
-      return this.gutCode;
-    }
-
-
-  }
-
-  private static class User {
-    private String id;
-    private final String tenantId;
-
-    User(JSONObject requestBody) {
-      JSONObject user = requestBody.getJSONObject(EventAttributes.USER);
-      if (user == null) {
-        throw new IllegalStateException("Event -> User is NULL OR EMPTY");
-      }
-      this.id = user.getString(EventAttributes.ID);
-      if (id == null || id.isEmpty()) {
-        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
-            "Event -> User -> id is NULL OR EMPTY");
-      }
-      this.tenantId = user.getString(EventAttributes.TENANT_ID);
       if (this.tenantId == null || this.tenantId.isEmpty()) {
         throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
             "Event -> User -> tenantId is NULL OR EMPTY");
       }
+
+      this.contentSource = context.getString(EventAttributes.CONTENT_SOURCE);
+
+      if (contentSource == null || contentSource.isEmpty()) {
+        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
+            "Event -> Context -> contentSource is NULL OR EMPTY");
+      }
     }
 
-    public String getId() {
-      return id;
+    public String getContentSource() {
+      return this.contentSource;
     }
 
     public String getTenantId() {
-      return tenantId;
+      return this.tenantId;
     }
+
   }
 
   private static class Result {
@@ -152,7 +131,7 @@ public class LearnersAssessmentExternalQuestionScoreEventModel {
   }
 
   static JSONObject builder(JSONObject requestBody) {
-    LearnersAssessmentExternalQuestionScoreEventModel eventModel = buildFromJSONObject(requestBody);
+    LearnersAssessmentScoreEventModel eventModel = buildFromJSONObject(requestBody);
     eventModel.validate();
     return asJSONObject(eventModel);
   }
@@ -170,54 +149,57 @@ public class LearnersAssessmentExternalQuestionScoreEventModel {
     }
   }
 
-  private static LearnersAssessmentExternalQuestionScoreEventModel buildFromJSONObject(
-      JSONObject requestBody) {
+  private static LearnersAssessmentScoreEventModel buildFromJSONObject(JSONObject requestBody) {
     String eventId = requestBody.getString(EventAttributes.EVENT_ID);
     String eventName = requestBody.getString(EventAttributes.EVENT_NAME);
+    String userId = requestBody.getString(EventAttributes.USER_ID);
+    String collectionId = requestBody.getString(EventAttributes.COLLECTION_ID);
+    String collectionType = requestBody.getString(EventAttributes.COLLECTION_TYPE);
     Context context = new Context(requestBody);
-    User user = new User(requestBody);
     Result result = new Result(requestBody);
-    LearnersAssessmentExternalQuestionScoreEventModel eventModel =
-        new LearnersAssessmentExternalQuestionScoreEventModel(eventId, eventName, context, user,
-            result);
+    LearnersAssessmentScoreEventModel eventModel =
+        new LearnersAssessmentScoreEventModel(eventId, eventName, context, userId, result);
+    eventModel.setCollectionId(collectionId);
+    eventModel.setCollectionType(collectionType);
     return eventModel;
   }
 
 
-  private static JSONObject asJSONObject(
-      LearnersAssessmentExternalQuestionScoreEventModel eventModel) {
+  private static JSONObject asJSONObject(LearnersAssessmentScoreEventModel eventModel) {
     JSONObject event = new JSONObject();
-    JSONObject user = new JSONObject();
     JSONObject context = new JSONObject();
     JSONObject result = new JSONObject();
-
-    user.put(EventAttributes.ID, eventModel.getUser().getId());
-    user.put(EventAttributes.TENANT_ID, eventModel.getUser().getTenantId());
-
-    context.put(EventAttributes.GUT_CODE, eventModel.getContext().getGutCode());
-    context.put(EventAttributes.QUESTION_ID, eventModel.getContext().getQuestionId());
 
     result.put(EventAttributes.SCORE, eventModel.getResult().getScore());
     result.put(EventAttributes.TIME_SPENT, eventModel.getResult().getTimeSpent());
 
+    context.put(EventAttributes.TENANT_ID, eventModel.getContext().getTenantId());
+    context.put(EventAttributes.CONTENT_SOURCE, eventModel.getContext().getContentSource());
+    
     event.put(EventAttributes.EVENT_ID, eventModel.getEventId());
     event.put(EventAttributes.EVENT_NAME, eventModel.getEventName());
+    event.put(EventAttributes.USER_ID, eventModel.getUserId());
+    event.put(EventAttributes.COLLECTION_ID, eventModel.getCollectionId());
+    event.put(EventAttributes.COLLECTION_TYPE, eventModel.getCollectionType());
+
     event.put(EventAttributes.CONTEXT, context);
     event.put(EventAttributes.RESULT, result);
-    event.put(EventAttributes.USER, user);
+
     return event;
   }
+
+
 
   static class EventAttributes {
     private static final String EVENT_ID = "eventId";
     private static final String EVENT_NAME = "eventName";
-    private static final String GUT_CODE = "gutCode";
-    private static final String QUESTION_ID = "questionId";
+    private static final String COLLECTION_ID = "collectionId";
+    private static final String COLLECTION_TYPE = "collectionType";
+    private static final String CONTENT_SOURCE = "contentSource";
+    private static final String USER_ID = "userId";
     private static final String TENANT_ID = "tenantId";
     private static final String CONTEXT = "context";
-    private static final String USER = "user";
     private static final String RESULT = "result";
-    private static final String ID = "id";
     private static final String SCORE = "score";
     private static final String TIME_SPENT = "timeSpent";
 

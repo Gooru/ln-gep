@@ -79,7 +79,7 @@ public class LearnersCompetencyStatusEventModel {
       this.contentSource = context.getString(EventAttributes.CONTENT_SOURCE);
       if (this.contentSource == null || this.contentSource.isEmpty()) {
         throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
-            "Event -> Context -> tenantId is NULL OR EMPTY");
+            "Event -> Context -> contentSource is NULL OR EMPTY");
       }
     }
 
@@ -89,6 +89,10 @@ public class LearnersCompetencyStatusEventModel {
 
     public String getTenantId() {
       return this.tenantId;
+    }
+    
+    public String getContentSource() { 
+      return this.contentSource;
     }
 
 
@@ -156,6 +160,7 @@ public class LearnersCompetencyStatusEventModel {
     context.put(EventAttributes.TENANT_ID, eventModel.getContext().getTenantId());
 
     context.put(EventAttributes.GUT_CODE, eventModel.getContext().getGutCode());
+    context.put(EventAttributes.CONTENT_SOURCE, eventModel.getContext().getContentSource());
 
     result.put(EventAttributes.STATUS, eventModel.getResult().getStatus());
 

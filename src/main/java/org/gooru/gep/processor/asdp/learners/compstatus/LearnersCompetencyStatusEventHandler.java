@@ -6,7 +6,7 @@ import org.json.JSONObject;
 public class LearnersCompetencyStatusEventHandler implements AsdpEventHandler {
 
   private static final String ACTIVITY_LEARNERS_COMPETENCY_STATUS_TOPIC =
-      "org.gooru.da.sink.asdp.learners.competency.status";
+      "org.gooru.da.sink.gep.activity.learners.competency.status";
 
   private final JSONObject message;
 

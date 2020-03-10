@@ -1,22 +1,22 @@
-package org.gooru.gep.processor.asdp.learners.extassessmentscore;
+package org.gooru.gep.processor.asdp.learners.assessmentscore;
 
 import org.gooru.gep.processor.asdp.AsdpEventHandler;
 import org.json.JSONObject;
 
-public class LearnersAssessmentExternalScoreEventHandler implements AsdpEventHandler {
+public class LearnersAssessmentScoreEventHandler implements AsdpEventHandler {
 
   private static final String ACTIVITY_LEARNERS_ASSESSMENT_SCORE =
-      "org.gooru.da.sink.asdp.learners.competency.status";
+      "org.gooru.da.sink.gep.activity.learners.assessment.score";
 
   private final JSONObject message;
 
-  public LearnersAssessmentExternalScoreEventHandler(JSONObject message) {
+  public LearnersAssessmentScoreEventHandler(JSONObject message) {
     this.message = message;
   }
 
   @Override
   public JSONObject createDiscreteEvent() {
-    return LearnersAssessmentExternalScoreEventModel.builder(message);
+    return LearnersAssessmentScoreEventModel.builder(message);
   }
 
 
