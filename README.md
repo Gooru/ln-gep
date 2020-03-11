@@ -69,7 +69,6 @@ org.gooru.da.sink.gep.question.score
 #### Activity Event Stream Topics
 org.gooru.da.sink.gep.activity.learners.competency.status
 org.gooru.da.sink.gep.activity.learners.assessment.score
-org.gooru.da.sink.gep.activity.learners.question.score
 
 org.gooru.da.sink.logW.usage.events - Used as a communication medium between Log Writer and GEP.
 org.gooru.da.sink.asdp.usage.events - Used as a communication medium between Activity Stream Data Processor(ASDP)  and GEP.
