@@ -71,8 +71,6 @@ public final class Constants {
         "activity.learners.competency.status";
     public static final String ACTIVITY_LEARNERS_ASSESSMENT_SCORE =
         "activity.learners.assessment.score";
-    public static final String ACTIVITY_LEARNERS_QUESTION_SCORE =
-        "activity.learners.question.score";
 
 
     private Event() {

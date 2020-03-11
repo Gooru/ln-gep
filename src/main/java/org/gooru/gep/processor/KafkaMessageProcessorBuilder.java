@@ -36,7 +36,7 @@ public class KafkaMessageProcessorBuilder {
         return new ResourceEventProcessor(message);
       case Constants.Event.ACTIVITY_LEARNERS_COMPETENCY_STATUS:
       case Constants.Event.ACTIVITY_LEARNERS_ASSESSMENT_SCORE:
-      case Constants.Event.ACTIVITY_LEARNERS_QUESTION_SCORE:
+        LOGGER.debug("Event Received From ASDP :: {}", message);
         return new AsdpEventProcessor(message);
       default:
         LOGGER.error("Invalid operation type passed in, not able to handle");
