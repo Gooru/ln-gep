@@ -166,7 +166,7 @@ public class LearnersCompetencyStatusEventModel {
 
     event.put(EventAttributes.EVENT_ID, eventModel.getEventId());
     event.put(EventAttributes.EVENT_NAME, eventModel.getEventName());
-    event.put(EventAttributes.USER_ID, eventModel.getEventId());
+    event.put(EventAttributes.USER_ID, eventModel.getUserId());
     event.put(EventAttributes.CONTEXT, context);
     event.put(EventAttributes.RESULT, result);
     return event;
