@@ -54,6 +54,8 @@ Following are a few samples of Discrete Events
     usage.assessment.score
     usage.collection.timespent
     usage.assessment.timespent
+    activity.learners.assessment.score
+    activity.learners.competency.status
 
 
 
