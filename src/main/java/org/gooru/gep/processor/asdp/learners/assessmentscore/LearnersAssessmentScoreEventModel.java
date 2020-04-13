@@ -18,7 +18,7 @@ public class LearnersAssessmentScoreEventModel {
   private String collectionType;
   private final Context context;
   private final String userId;
-  private final Result result;
+  private final Result result;;
 
   public LearnersAssessmentScoreEventModel(String eventId, String eventName, Context context,
       String userId, Result result) {
@@ -70,6 +70,8 @@ public class LearnersAssessmentScoreEventModel {
 
   private static class Context {
     private final String contentSource;
+    private final String gutCode;
+    private final String classId;
     private final String tenantId;
 
     Context(JSONObject requestBody) {
@@ -91,6 +93,14 @@ public class LearnersAssessmentScoreEventModel {
         throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
             "Event -> Context -> contentSource is NULL OR EMPTY");
       }
+
+      this.gutCode = context.getString(EventAttributes.GUT_COMP_CODE);
+
+      if (gutCode == null || gutCode.isEmpty()) {
+        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
+            "Event -> Context -> gutCode is NULL OR EMPTY");
+      }
+      this.classId = context.getString(EventAttributes.CLASS_ID);
     }
 
     public String getContentSource() {
@@ -99,6 +109,14 @@ public class LearnersAssessmentScoreEventModel {
 
     public String getTenantId() {
       return this.tenantId;
+    }
+
+    public String getGutCode() {
+      return this.gutCode;
+    }
+
+    public String getClassId() {
+      return this.classId;
     }
 
   }
@@ -175,7 +193,9 @@ public class LearnersAssessmentScoreEventModel {
 
     context.put(EventAttributes.TENANT_ID, eventModel.getContext().getTenantId());
     context.put(EventAttributes.CONTENT_SOURCE, eventModel.getContext().getContentSource());
-    
+    context.put(EventAttributes.GUT_COMP_CODE, eventModel.getContext().getGutCode());
+    context.put(EventAttributes.CLASS_ID, eventModel.getContext().getClassId());
+
     event.put(EventAttributes.EVENT_ID, eventModel.getEventId());
     event.put(EventAttributes.EVENT_NAME, eventModel.getEventName());
     event.put(EventAttributes.USER_ID, eventModel.getUserId());
@@ -202,6 +222,8 @@ public class LearnersAssessmentScoreEventModel {
     private static final String RESULT = "result";
     private static final String SCORE = "score";
     private static final String TIME_SPENT = "timeSpent";
+    private static final String GUT_COMP_CODE = "gutCompCode";
+    private static final String CLASS_ID = "classId";
 
     private EventAttributes() {
       throw new AssertionError();
