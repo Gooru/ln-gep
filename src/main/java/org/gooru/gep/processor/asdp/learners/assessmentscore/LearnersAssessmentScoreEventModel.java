@@ -18,7 +18,7 @@ public class LearnersAssessmentScoreEventModel {
   private String collectionType;
   private final Context context;
   private final String userId;
-  private final Result result;;
+  private final Result result;
 
   public LearnersAssessmentScoreEventModel(String eventId, String eventName, Context context,
       String userId, Result result) {
@@ -70,7 +70,8 @@ public class LearnersAssessmentScoreEventModel {
 
   private static class Context {
     private final String contentSource;
-    private final String gutCode;
+    private final String gutCompCode;
+    private final String compCode;
     private final String classId;
     private final String tenantId;
 
@@ -94,12 +95,20 @@ public class LearnersAssessmentScoreEventModel {
             "Event -> Context -> contentSource is NULL OR EMPTY");
       }
 
-      this.gutCode = context.getString(EventAttributes.GUT_COMP_CODE);
+      this.gutCompCode = context.getString(EventAttributes.GUT_COMP_CODE);
 
-      if (gutCode == null || gutCode.isEmpty()) {
+      if (gutCompCode == null || gutCompCode.isEmpty()) {
         throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
             "Event -> Context -> gutCode is NULL OR EMPTY");
       }
+      
+      this.compCode = context.getString(EventAttributes.COMP_CODE);
+      
+      if (compCode == null || compCode.isEmpty()) {
+        throw new HttpResponseWrapperException(HttpStatus.BAD_REQUEST,
+            "Event -> Context -> compCode is NULL OR EMPTY");
+      }
+      
       this.classId = context.getString(EventAttributes.CLASS_ID);
     }
 
@@ -111,12 +120,16 @@ public class LearnersAssessmentScoreEventModel {
       return this.tenantId;
     }
 
-    public String getGutCode() {
-      return this.gutCode;
+    public String getGutCompCode() {
+      return this.gutCompCode;
     }
 
     public String getClassId() {
       return this.classId;
+    }
+
+    public String getCompCode() {
+      return this.compCode;
     }
 
   }
@@ -193,7 +206,8 @@ public class LearnersAssessmentScoreEventModel {
 
     context.put(EventAttributes.TENANT_ID, eventModel.getContext().getTenantId());
     context.put(EventAttributes.CONTENT_SOURCE, eventModel.getContext().getContentSource());
-    context.put(EventAttributes.GUT_COMP_CODE, eventModel.getContext().getGutCode());
+    context.put(EventAttributes.GUT_COMP_CODE, eventModel.getContext().getGutCompCode());
+    context.put(EventAttributes.COMP_CODE, eventModel.getContext().getCompCode());
     context.put(EventAttributes.CLASS_ID, eventModel.getContext().getClassId());
 
     event.put(EventAttributes.EVENT_ID, eventModel.getEventId());
@@ -223,6 +237,7 @@ public class LearnersAssessmentScoreEventModel {
     private static final String SCORE = "score";
     private static final String TIME_SPENT = "timeSpent";
     private static final String GUT_COMP_CODE = "gutCompCode";
+    private static final String COMP_CODE = "compCode";
     private static final String CLASS_ID = "classId";
 
     private EventAttributes() {
